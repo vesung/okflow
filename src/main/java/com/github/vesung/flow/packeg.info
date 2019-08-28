@@ -1,0 +1,4 @@
+流程引擎扩展开发指南
+
+1. 业务系统用户对象继承IFlowUser
+2. 实现用户查询服务IUserFindService
