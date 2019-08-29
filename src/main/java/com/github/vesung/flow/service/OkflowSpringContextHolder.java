@@ -12,13 +12,13 @@ import org.springframework.stereotype.Component;
  * @date 2019年9月28日 下午3:32:11
  */
 @Component
-public class SpringContextHolder implements ApplicationContextAware {
+public class OkflowSpringContextHolder implements ApplicationContextAware {
 
     private static ApplicationContext applicationContext;
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        SpringContextHolder.applicationContext = applicationContext;
+        OkflowSpringContextHolder.applicationContext = applicationContext;
     }
 
     public static ApplicationContext getApplicationContext() {
@@ -38,7 +38,7 @@ public class SpringContextHolder implements ApplicationContextAware {
     }
 
     private static void assertApplicationContext() {
-        if (SpringContextHolder.applicationContext == null) {
+        if (OkflowSpringContextHolder.applicationContext == null) {
             throw new RuntimeException("applicaitonContext属性为null,请检查是否注入了SpringContextHolder!");
         }
     }

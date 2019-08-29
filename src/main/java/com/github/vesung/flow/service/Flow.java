@@ -108,4 +108,14 @@ public interface Flow {
      * @return
      */
     Object getStepData(String stepName);
+
+    /**
+     * 启动流程计时器
+     */
+    void startTime();
+
+    /**
+     * 重置当前流程计时为当前时间
+     */
+    void resetTime();
 }

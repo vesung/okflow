@@ -138,7 +138,7 @@ public class FlowImpl implements Flow {
 
         // 特殊处理类
         if(!Strings.isNullOrEmpty(step.getClass_path())){
-            Object obj = SpringContextHolder.getBean(step.getClass_path());
+            Object obj = OkflowSpringContextHolder.getBean(step.getClass_path());
             if(obj instanceof NextStepFinder){
                 return ((NextStepFinder)obj).findNextStep(this, action);
             }
@@ -408,6 +408,24 @@ public class FlowImpl implements Flow {
         return this.getStepVar(stepName, const_data);
     }
 
+    @Override
+    public void startTime() {
+        if(this.flowData.getBegin_time() != null){
+            log.info("当前流程计时已启动，请勿重复操作");
+            return;
+        }
+
+        this.resetTime();
+        log.info("流程计时启动成功");
+    }
+
+    @Override
+    public void resetTime() {
+        this.flowData.setLimit_time(this.findCurrentStep().getLimittime());
+        this.flowData.setBegin_time(new Date());
+        flowDataMapper.updateByPrimaryKey(this.flowData);
+    }
+
     public String getCurrent_step() {
         return this.flowData.getCurrent_step();
     }
@@ -439,15 +457,13 @@ public class FlowImpl implements Flow {
         flowData.setCurrent_user(nextUser.getAccount());
         flowData.setCurrent_role(nextUser.getRoleCode());
         flowData.setCurrent_dept(nextUser.getDeptCode());
-        flowData.setLimit_time(nextStep.getLimittime());
-        flowData.setBegin_time(new Date());
         flowData.setCurrent_step(nextStep.getStep());
         flowDataMapper.updateByPrimaryKey(flowData);
 
         // 执行流程自定义action
         if(!Strings.isNullOrEmpty(currStep.getClass_path())){
             try {
-                ((FlowAction) SpringContextHolder.getBean(currStep.getClass_path()))
+                ((FlowAction) OkflowSpringContextHolder.getBean(currStep.getClass_path()))
                         .submitAfter(flowService.getCurrentFlow(flowData.getFlow_type(), flowData.getBuz_id())
                             , action);
             } catch (Exception e) {

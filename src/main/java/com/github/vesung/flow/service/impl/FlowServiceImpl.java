@@ -53,10 +53,7 @@ public class FlowServiceImpl implements IFlowService {
         flowData.setCurrent_role(optionUser.getRoleCode());
         flowData.setCurrent_dept(optionUser.getDeptCode());
         flowData.setStart_date(new Date());
-//        flowData.setCurrent_step();
         flowData.setFlow_dept(flowDept);
-//        flowData.setLimit_time(step.getLimittime());
-        flowData.setBegin_time(new Date());
         flowData.setCreator(optionUser.getAccount());
 
         flowDataMapper.insert(flowData);
