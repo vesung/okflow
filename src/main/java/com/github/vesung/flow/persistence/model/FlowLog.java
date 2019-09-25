@@ -19,6 +19,17 @@ public class FlowLog extends Base {
     private String update_role;
     // 最后更新部门
     private String update_dept;
+    // 流程类型
+    private String flow_type;
+
+    public String getFlow_type() {
+        return flow_type;
+    }
+
+    public FlowLog setFlow_type(String flow_type) {
+        this.flow_type = flow_type;
+        return this;
+    }
 
     public String getStep() {
         return step;

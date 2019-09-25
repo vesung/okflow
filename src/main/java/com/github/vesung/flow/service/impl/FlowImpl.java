@@ -351,7 +351,9 @@ public class FlowImpl implements Flow {
      * @return
      */
     public List<FlowLog> queryFlowLogs() {
-        return flowLogMapper.select(new FlowLog().setBiz_id(this.flowData.getBuz_id()));
+        return flowLogMapper.select(new FlowLog()
+                .setFlow_type(this.flowData.getFlow_type())
+                .setBiz_id(this.flowData.getBuz_id()));
     }
 
     /**
@@ -448,6 +450,7 @@ public class FlowImpl implements Flow {
         FlowLog flowLog = this.buildFlowLog(currStep, flowData.getBuz_id(), currUser,
                 comment,
                 action == null ? "submit" : action);
+        flowLog.setFlow_type(flowData.getFlow_type());
         flowLogMapper.insert(flowLog);
 
         // 更新流程数据信息
@@ -458,6 +461,7 @@ public class FlowImpl implements Flow {
         flowData.setCurrent_role(nextUser.getRoleCode());
         flowData.setCurrent_dept(nextUser.getDeptCode());
         flowData.setCurrent_step(nextStep.getStep());
+        flowData.setFlow_action(action);
         flowDataMapper.updateByPrimaryKey(flowData);
 
         // 执行流程自定义action

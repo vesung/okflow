@@ -53,7 +53,7 @@ public interface Flow {
      * @param currUser
      * @param nextUser
      * @param comments
-     * @param data
+     * @param data 附加数据
      * @return
      */
     Flow submitTask(String action, IFlowUser currUser, IFlowUser nextUser, String comments, String data);

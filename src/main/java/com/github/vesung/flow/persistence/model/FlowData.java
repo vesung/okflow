@@ -42,8 +42,12 @@ public class FlowData {
     private Integer limit_time;
     // 当前步骤开始时间
     private Date begin_time;
+    // 创建人
     private String creator;
+    // 流程变量
     private String vars;
+    // 流程当前action
+    private String flow_action;
 
     public Integer getId() {
         return id;
@@ -196,5 +200,14 @@ public class FlowData {
     public FlowData setVars(String vars) {
         this.vars = vars;
         return this;
+    }
+
+    public FlowData setFlow_action(String flow_action) {
+        this.flow_action = flow_action;
+        return this;
+    }
+
+    public String getFlow_action() {
+        return flow_action;
     }
 }
