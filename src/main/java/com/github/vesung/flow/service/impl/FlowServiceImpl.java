@@ -22,7 +22,7 @@ import java.util.*;
  * @Date 2019-05-11 17:06:29
  */
 @Service
-public class FlowServiceImpl implements IFlowService {
+public class FlowServiceImpl implements FlowService {
 
     private static final Logger log = LoggerFactory.getLogger(FlowServiceImpl.class);
 

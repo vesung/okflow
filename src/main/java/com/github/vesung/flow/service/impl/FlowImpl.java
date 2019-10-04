@@ -52,7 +52,7 @@ public class FlowImpl implements Flow {
     @Resource
     private IUserFindService userService;
     @Resource
-    private IFlowService flowService;
+    private FlowService flowService;
     @Resource
     private FlowDefMapper flowDefMapper;
     @Resource
@@ -199,6 +199,10 @@ public class FlowImpl implements Flow {
 
         FlowDef currStep = this.findCurrentStep();
         FlowDef nextStep = this.findNextStep(action);
+
+        if(nextStep == null){
+            throw new FlowException("下一个步骤未定义:" + action);
+        }
 
         // 保存当前步骤
         this.setStepVar(currStep.getStep(), const_action, action);

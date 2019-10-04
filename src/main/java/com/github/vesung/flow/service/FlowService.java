@@ -8,7 +8,7 @@ import com.github.vesung.flow.IFlowUser;
  * @author fengshuonan
  * @Date 2019-05-11 17:06:29
  */
-public interface IFlowService {
+public interface FlowService {
 
     /**
      * 启动新流程,初始状态为”草稿“，
