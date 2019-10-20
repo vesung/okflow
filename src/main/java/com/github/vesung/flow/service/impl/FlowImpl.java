@@ -256,7 +256,8 @@ public class FlowImpl implements Flow {
      * 判断当前路程是否处于机构转报中
      * @return
      */
-    private boolean isTransfering() {
+    @Override
+    public boolean isTransfering() {
         Object obj = this.getVar(const_transfer);
         return obj != null && obj instanceof List && ((List)obj).size() > 0;
     }

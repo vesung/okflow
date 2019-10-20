@@ -12,6 +12,13 @@ import java.util.List;
  * @since 2019/6/19
  */
 public interface Flow {
+
+    /**
+     * 当前流程是否
+     * @return
+     */
+    boolean isTransfering();
+
     /**
      * 获取当前流程变量
      * @param action
