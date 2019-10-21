@@ -1,6 +1,9 @@
 package com.github.vesung.flow.service;
 
 import com.github.vesung.flow.IFlowUser;
+import com.github.vesung.flow.persistence.model.FlowLog;
+
+import java.util.List;
 
 /**
  * 流程管理Service
@@ -34,5 +37,13 @@ public interface FlowService {
      * @return
      */
     int countWaitingfor(String userAccount);
+
+    /**
+     * 获取指定条件的日志列表
+     * @param buzIds
+     * @param actions
+     * @return
+     */
+    List<FlowLog> queryFlowLogsByFilter(String flowType, List<String> buzIds, List<String> actions);
 
 }

@@ -6,11 +6,13 @@ import com.github.vesung.flow.persistence.dao.FlowDataMapper;
 import com.github.vesung.flow.persistence.dao.FlowDefMapper;
 import com.github.vesung.flow.persistence.dao.FlowLogMapper;
 import com.github.vesung.flow.persistence.model.FlowData;
+import com.github.vesung.flow.persistence.model.FlowLog;
 import com.github.vesung.flow.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -90,6 +92,26 @@ public class FlowServiceImpl implements FlowService {
     @Override
     public int countWaitingfor(String userAccount) {
         return this.flowDataMapper.selectCount(new FlowData().setCurrent_user(userAccount));
+    }
+
+
+    /**
+     * 获取指定条件的日志列表
+     * @param buzIds
+     * @param actions
+     * @return
+     */
+    @Override
+    public List<FlowLog> queryFlowLogsByFilter(String flowType, List<String> buzIds, List<String> actions){
+        Example example = new Example(FlowLog.class);
+        example.createCriteria()
+                .andIsNotNull("comments")
+                .andEqualTo("flow_type", flowType)
+                .andIn("biz_id", buzIds)
+                .andIn("flow_action", actions);
+        example.setOrderByClause("update_date desc");
+
+        return flowLogMapper.selectByExample(example);
     }
 
 
