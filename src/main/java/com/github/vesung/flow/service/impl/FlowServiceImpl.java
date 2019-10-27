@@ -37,7 +37,7 @@ public class FlowServiceImpl implements FlowService {
     @Resource
     private FlowDefMapper flowDefMapper;
     @Resource
-    private IUserFindService userService;
+    private UserFindService userService;
     @Resource
     private FlowDataMapper flowDataMapper;
 
