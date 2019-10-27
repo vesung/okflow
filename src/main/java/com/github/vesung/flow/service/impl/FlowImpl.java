@@ -5,7 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.vesung.common.ListBuilder;
 import com.github.vesung.common.MapBuilder;
 import com.github.vesung.flow.FlowException;
-import com.github.vesung.flow.IFlowUser;
+import com.github.vesung.flow.FlowUser;
 import com.github.vesung.flow.event.FlowSubmitEvent;
 import com.github.vesung.flow.persistence.dao.FlowDataMapper;
 import com.github.vesung.flow.persistence.dao.FlowDefMapper;
@@ -50,7 +50,7 @@ public class FlowImpl implements Flow {
     @Resource
     private FlowDataMapper flowDataMapper;
     @Resource
-    private UserFindService userService;
+    private FlowUserService userService;
     @Resource
     private FlowService flowService;
     @Resource
@@ -90,7 +90,7 @@ public class FlowImpl implements Flow {
      * @param action
      * @return
      */
-    public List<IFlowUser> findNextUsers(String action) {
+    public List<FlowUser> findNextUsers(String action) {
 
         // 流程已结束
         if(const_endFlow.equals(flowData.getCurrent_step())){
@@ -105,18 +105,18 @@ public class FlowImpl implements Flow {
 
         // 当前是最后流程最后一步，没有下一步联系人
         if(const_endFlow.equals(nextStep.getStep())){
-            return new ListBuilder<IFlowUser>().add(new IFlowUser.block()).build();
+            return new ListBuilder<FlowUser>().add(new FlowUser.block()).build();
         }
 
         // 下一步处理人：申请人
         String nextRole = nextStep.getStep_role();
         if(const_creator.equals(nextRole)){
-            List<IFlowUser> nextUser = new ArrayList<>();
+            List<FlowUser> nextUser = new ArrayList<>();
             nextUser.add(userService.findUserByAccount(flowData.getCreator()));
             return nextUser;
         }
 
-        List<IFlowUser> next =  userService.findUsers(flowData.getFlow_dept(), nextStep.getStep_role());
+        List<FlowUser> next =  userService.findUsers(flowData.getFlow_dept(), nextStep.getStep_role());
         if(next == null || next.size() < 1)
             log.error(String.format("未找到下一步处理人,dept=%s,role=%s", flowData.getFlow_dept(), nextStep.getStep_role()));
 
@@ -185,7 +185,7 @@ public class FlowImpl implements Flow {
      * @return
      */
     @Transactional
-    public Flow submitTask(String action, IFlowUser currUser, IFlowUser nextUser, String comments, String data) {
+    public Flow submitTask(String action, FlowUser currUser, FlowUser nextUser, String comments, String data) {
         if(flowData == null){
             throw new FlowException("流程不存在");
         }
@@ -214,7 +214,7 @@ public class FlowImpl implements Flow {
         // 当前流程即将结束，如果处于流程转报过程，则恢复转报前流程
         if(const_endFlow.equals(nextStep.getStep()) && this.isTransfering()){
             FlowDef transferStep = this.unTransferDept();
-            IFlowUser transferUser = this.userService.findUsers(
+            FlowUser transferUser = this.userService.findUsers(
                     this.flowData.getFlow_dept(), transferStep.getStep_role()).get(0);
             this.goNextStep(flowData, currStep, transferStep, currUser, transferUser,
                     action, comments);
@@ -449,7 +449,7 @@ public class FlowImpl implements Flow {
      * @param comment
      */
     private void goNextStep(FlowData flowData, FlowDef currStep, FlowDef nextStep,
-                            IFlowUser currUser, IFlowUser nextUser,
+                            FlowUser currUser, FlowUser nextUser,
                             String action, String comment) {
         // 更新流程log
         FlowLog flowLog = this.buildFlowLog(currStep, flowData.getBuz_id(), currUser,
@@ -489,7 +489,7 @@ public class FlowImpl implements Flow {
      * @param bizId
      * @return
      */
-    private FlowLog buildFlowLog(FlowDef step, String bizId, IFlowUser currUser, String comments, String flowAction) {
+    private FlowLog buildFlowLog(FlowDef step, String bizId, FlowUser currUser, String comments, String flowAction) {
         FlowLog log = new FlowLog();
         log.setStep(step == null ? "-1" : step.getStep());
         log.setBiz_id(bizId);

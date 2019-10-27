@@ -1,6 +1,6 @@
 package com.github.vesung.flow.service;
 
-import com.github.vesung.flow.IFlowUser;
+import com.github.vesung.flow.FlowUser;
 import com.github.vesung.flow.persistence.model.FlowData;
 import com.github.vesung.flow.persistence.model.FlowDef;
 import com.github.vesung.flow.persistence.model.FlowLog;
@@ -52,7 +52,7 @@ public interface Flow {
      * @param action
      * @return
      */
-    List<IFlowUser> findNextUsers(String action);
+    List<FlowUser> findNextUsers(String action);
 
     /**
      * 提交当前流程
@@ -63,7 +63,7 @@ public interface Flow {
      * @param data 附加数据
      * @return
      */
-    Flow submitTask(String action, IFlowUser currUser, IFlowUser nextUser, String comments, String data);
+    Flow submitTask(String action, FlowUser currUser, FlowUser nextUser, String comments, String data);
 
     /**
      * 获取当前步骤name

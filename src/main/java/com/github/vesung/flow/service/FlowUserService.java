@@ -1,11 +1,11 @@
 package com.github.vesung.flow.service;
 
 import com.github.vesung.flow.FlowRole;
-import com.github.vesung.flow.IFlowUser;
+import com.github.vesung.flow.FlowUser;
 
 import java.util.List;
 
-public interface UserFindService {
+public interface FlowUserService {
 
     /**
      * 按机构，角色查找指定用户
@@ -13,20 +13,20 @@ public interface UserFindService {
      * @param roleCode
      * @return
      */
-    List<IFlowUser> findUsers(String deptCode, String roleCode);
+    List<FlowUser> findUsers(String deptCode, String roleCode);
 
     /**
      * 按账号查找指定用户
      * @param account
      * @return
      */
-    IFlowUser findUserByAccount(String account);
+    FlowUser findUserByAccount(String account);
 
     /**
      * 查找当前登录用户
      * @return
      */
-    IFlowUser currentUser();
+    FlowUser currentUser();
 
     /**
      * 查找角色列表

@@ -3,7 +3,7 @@ package com.github.vesung.flow;
 /**
  * 业务用户对象要实现本接口
  */
-public interface IFlowUser {
+public interface FlowUser {
 
     /**
      * 用户id
@@ -23,7 +23,7 @@ public interface IFlowUser {
      */
     String getRoleCode();
 
-    public class block implements IFlowUser {
+    public class block implements FlowUser {
         @Override
         public String getAccount() {
             return null;

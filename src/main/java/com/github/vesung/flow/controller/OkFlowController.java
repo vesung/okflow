@@ -9,7 +9,7 @@ import com.github.vesung.flow.persistence.dao.FlowDefMapper;
 import com.github.vesung.flow.persistence.dao.FlowTypeDefMapper;
 import com.github.vesung.flow.persistence.model.FlowDef;
 import com.github.vesung.flow.persistence.model.FlowTypeDef;
-import com.github.vesung.flow.service.UserFindService;
+import com.github.vesung.flow.service.FlowUserService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,7 +34,7 @@ public class OkFlowController {
     @Resource
     private FlowTypeDefMapper flowTypeDefMapper;
     @Resource
-    private UserFindService userFindService;
+    private FlowUserService userFindService;
 
     @ApiOperation("查询流程种类列表")
     @GetMapping(path = "/list/type")

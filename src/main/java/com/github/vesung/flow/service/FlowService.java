@@ -1,6 +1,6 @@
 package com.github.vesung.flow.service;
 
-import com.github.vesung.flow.IFlowUser;
+import com.github.vesung.flow.FlowUser;
 import com.github.vesung.flow.persistence.model.FlowLog;
 
 import java.util.List;
@@ -21,7 +21,7 @@ public interface FlowService {
      * @param flowDept 流程所属机构
      * @return
      */
-    public Flow start(String flowType, String buzId, IFlowUser optionUser, String flowDept);
+    public Flow start(String flowType, String buzId, FlowUser optionUser, String flowDept);
 
     /**
      * 获取当前流程助手

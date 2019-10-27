@@ -1,7 +1,7 @@
 package com.github.vesung.flow.service.impl;
 
 import com.github.vesung.flow.FlowException;
-import com.github.vesung.flow.IFlowUser;
+import com.github.vesung.flow.FlowUser;
 import com.github.vesung.flow.persistence.dao.FlowDataMapper;
 import com.github.vesung.flow.persistence.dao.FlowDefMapper;
 import com.github.vesung.flow.persistence.dao.FlowLogMapper;
@@ -37,12 +37,12 @@ public class FlowServiceImpl implements FlowService {
     @Resource
     private FlowDefMapper flowDefMapper;
     @Resource
-    private UserFindService userService;
+    private FlowUserService userService;
     @Resource
     private FlowDataMapper flowDataMapper;
 
     @Override
-    public Flow start(String flowType, String buzId, IFlowUser optionUser, String flowDept) {
+    public Flow start(String flowType, String buzId, FlowUser optionUser, String flowDept) {
 
         int buzCount = flowDataMapper.selectCount(new FlowData().setFlow_type(flowType).setBuz_id(buzId));
         if(buzCount >= 1){
