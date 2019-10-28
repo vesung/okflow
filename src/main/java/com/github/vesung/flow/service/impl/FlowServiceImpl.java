@@ -5,8 +5,10 @@ import com.github.vesung.flow.FlowUser;
 import com.github.vesung.flow.persistence.dao.FlowDataMapper;
 import com.github.vesung.flow.persistence.dao.FlowDefMapper;
 import com.github.vesung.flow.persistence.dao.FlowLogMapper;
+import com.github.vesung.flow.persistence.dao.FlowTypeDefMapper;
 import com.github.vesung.flow.persistence.model.FlowData;
 import com.github.vesung.flow.persistence.model.FlowLog;
+import com.github.vesung.flow.persistence.model.FlowTypeDef;
 import com.github.vesung.flow.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +42,15 @@ public class FlowServiceImpl implements FlowService {
     private FlowUserService userService;
     @Resource
     private FlowDataMapper flowDataMapper;
+    @Resource
+    private FlowTypeDefMapper flowTypeDefMapper;
+
+
+    @Override
+    public List<FlowTypeDef> listFlowType(){
+        List<FlowTypeDef> types = flowTypeDefMapper.selectAll();
+        return types;
+    }
 
     @Override
     public Flow start(String flowType, String buzId, FlowUser optionUser, String flowDept) {

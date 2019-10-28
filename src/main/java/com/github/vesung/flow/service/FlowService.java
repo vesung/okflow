@@ -2,6 +2,7 @@ package com.github.vesung.flow.service;
 
 import com.github.vesung.flow.FlowUser;
 import com.github.vesung.flow.persistence.model.FlowLog;
+import com.github.vesung.flow.persistence.model.FlowTypeDef;
 
 import java.util.List;
 
@@ -12,6 +13,12 @@ import java.util.List;
  * @Date 2019-05-11 17:06:29
  */
 public interface FlowService {
+
+    /**
+     * 查询流程定义列表
+     * @return
+     */
+    List<FlowTypeDef> listFlowType();
 
     /**
      * 启动新流程,初始状态为”草稿“，

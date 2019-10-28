@@ -45,9 +45,9 @@ public class OkFlowController {
     }
 
     @ApiOperation("查询流程步骤")
-    @GetMapping(path = "/list/step/{type}")
+    @GetMapping(path = "/list/step")
     @ResponseBody
-    public List<FlowDef> listStep(String type){
+    public List<FlowDef> listStep(@RequestParam String type){
         return flowDefMapper.select(new FlowDef().setType(type));
     }
 
