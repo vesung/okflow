@@ -1,6 +1,7 @@
 package com.github.vesung.flow.service;
 
 import com.github.vesung.flow.FlowUser;
+import com.github.vesung.flow.persistence.model.FlowDef;
 import com.github.vesung.flow.persistence.model.FlowLog;
 import com.github.vesung.flow.persistence.model.FlowTypeDef;
 
@@ -53,4 +54,28 @@ public interface FlowService {
      */
     List<FlowLog> queryFlowLogsByFilter(String flowType, List<String> buzIds, List<String> actions);
 
+    /**
+     * 修改流程步骤
+     * @param flow
+     */
+    void updateStep(FlowDef flow);
+
+    /**
+     * 新增流程步骤
+     * @param flow
+     */
+    void addStep(FlowDef flow);
+
+    /**
+     * 查询步骤定义
+     * @param flowId
+     * @return
+     */
+    FlowDef queryStepById(Integer flowId);
+
+    /**
+     * 删除步骤
+     * @param flowId
+     */
+    void deleteStep(Integer flowId);
 }

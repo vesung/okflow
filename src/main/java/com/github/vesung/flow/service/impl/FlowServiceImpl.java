@@ -7,9 +7,11 @@ import com.github.vesung.flow.persistence.dao.FlowDefMapper;
 import com.github.vesung.flow.persistence.dao.FlowLogMapper;
 import com.github.vesung.flow.persistence.dao.FlowTypeDefMapper;
 import com.github.vesung.flow.persistence.model.FlowData;
+import com.github.vesung.flow.persistence.model.FlowDef;
 import com.github.vesung.flow.persistence.model.FlowLog;
 import com.github.vesung.flow.persistence.model.FlowTypeDef;
 import com.github.vesung.flow.service.*;
+import com.google.common.base.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Lookup;
@@ -125,5 +127,53 @@ public class FlowServiceImpl implements FlowService {
         return flowLogMapper.selectByExample(example);
     }
 
+    @Override
+    public void updateStep(FlowDef flow) {
+        FlowDef def = this.assertNotNull(flow.getId());
+        def.setStep(flow.getStep());
+        def.setStatus_name(flow.getStatus_name());
+        def.setStep_role(flow.getStep_role());
+        def.setUpdate_user(userService.currentUser().getAccount());
+        def.setUpdate_date(new Date());
+
+        flowDefMapper.updateByPrimaryKey(def);
+    }
+
+    @Override
+    public void addStep(FlowDef flow) {
+        FlowDef def = flowDefMapper.selectByPrimaryKey(flow.getId());
+        if(def != null){
+            throw new FlowException("流程步骤已存在");
+        }
+
+        if(Strings.isNullOrEmpty(flow.getType())){
+            throw new FlowException("请选择流程种类");
+        }
+
+        flow.setId(null);
+        flow.setNext_step(null);
+        flowDefMapper.insert(flow);
+    }
+
+    @Override
+    public FlowDef queryStepById(Integer flowId) {
+        FlowDef flow = flowDefMapper.selectByPrimaryKey(flowId);
+        return flow;
+    }
+
+    @Override
+    public void deleteStep(Integer flowId) {
+        flowDefMapper.deleteByPrimaryKey(flowId);
+
+    }
+
+
+    private FlowDef assertNotNull(Integer id) {
+        FlowDef flow = flowDefMapper.selectByPrimaryKey(id);
+        if(flow == null){
+            throw new FlowException("步骤未定义");
+        }
+        return flow;
+    }
 
 }
