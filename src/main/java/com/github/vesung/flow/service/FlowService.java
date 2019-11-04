@@ -44,7 +44,7 @@ public interface FlowService {
      * @param userAccount
      * @return
      */
-    int countWaitingfor(String userAccount);
+    int countWaitingfor(String flowType, String userAccount, String roleCode);
 
     /**
      * 获取指定条件的日志列表

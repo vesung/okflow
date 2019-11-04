@@ -103,8 +103,12 @@ public class FlowServiceImpl implements FlowService {
     }
 
     @Override
-    public int countWaitingfor(String userAccount) {
-        return this.flowDataMapper.selectCount(new FlowData().setCurrent_user(userAccount));
+    public int countWaitingfor(String flowType, String userAccount, String roleCode) {
+        return this.flowDataMapper.selectCount(new FlowData()
+                .setCurrent_user(userAccount)
+                .setCurrent_role(roleCode)
+                .setFlow_type(flowType)
+        );
     }
 
 
