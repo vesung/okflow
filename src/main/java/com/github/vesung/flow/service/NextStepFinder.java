@@ -1,6 +1,6 @@
 package com.github.vesung.flow.service;
 
-import com.github.vesung.flow.persistence.model.FlowDef;
+import com.github.vesung.flow.persistence.model.FlowStep;
 
 /**
  *
@@ -14,5 +14,5 @@ public interface NextStepFinder {
      * @param action
      * @return
      */
-    FlowDef findNextStep(Flow flow, String action);
+    FlowStep findNextStep(Flow flow, String action);
 }

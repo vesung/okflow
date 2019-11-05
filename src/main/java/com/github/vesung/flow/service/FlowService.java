@@ -1,7 +1,7 @@
 package com.github.vesung.flow.service;
 
 import com.github.vesung.flow.FlowUser;
-import com.github.vesung.flow.persistence.model.FlowDef;
+import com.github.vesung.flow.persistence.model.FlowStep;
 import com.github.vesung.flow.persistence.model.FlowLog;
 import com.github.vesung.flow.persistence.model.FlowTypeDef;
 
@@ -58,20 +58,20 @@ public interface FlowService {
      * 修改流程步骤
      * @param flow
      */
-    void updateStep(FlowDef flow);
+    void updateStep(FlowStep flow);
 
     /**
      * 新增流程步骤
      * @param flow
      */
-    void addStep(FlowDef flow);
+    void addStep(FlowStep flow);
 
     /**
      * 查询步骤定义
      * @param flowId
      * @return
      */
-    FlowDef queryStepById(Integer flowId);
+    FlowStep queryStepById(Integer flowId);
 
     /**
      * 删除步骤

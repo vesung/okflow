@@ -2,13 +2,15 @@ package com.github.vesung.flow.persistence.model;
 
 import javax.persistence.Table;
 
-@Table(name = "flow_def")
-public class FlowDef extends Base {
+@Table(name = "flow_step_def")
+public class FlowStep extends Base {
 
     /**流程类型*/
     private String type;
     /**步骤标识*/
     private String step;
+    /**步骤名称*/
+    private String step_name;
     /**下一步*/
     private String next_step;
     /**角色code*/
@@ -17,8 +19,6 @@ public class FlowDef extends Base {
     private String class_path;
     /**流程状态*/
     private String flow_status;
-    /**状态描述*/
-    private String status_name;
     /**当前步骤时限*/
     private Integer limittime;
 
@@ -26,7 +26,7 @@ public class FlowDef extends Base {
         return type;
     }
 
-    public FlowDef setType(String type) {
+    public FlowStep setType(String type) {
         this.type = type;
         return this;
     }
@@ -35,7 +35,7 @@ public class FlowDef extends Base {
         return step;
     }
 
-    public FlowDef setStep(String step) {
+    public FlowStep setStep(String step) {
         this.step = step;
         return this;
     }
@@ -44,7 +44,7 @@ public class FlowDef extends Base {
         return next_step;
     }
 
-    public FlowDef setNext_step(String next_step) {
+    public FlowStep setNext_step(String next_step) {
         this.next_step = next_step;
         return this;
     }
@@ -53,7 +53,7 @@ public class FlowDef extends Base {
         return step_role;
     }
 
-    public FlowDef setStep_role(String step_role) {
+    public FlowStep setStep_role(String step_role) {
         this.step_role = step_role;
         return this;
     }
@@ -62,7 +62,7 @@ public class FlowDef extends Base {
         return class_path;
     }
 
-    public FlowDef setClass_path(String class_path) {
+    public FlowStep setClass_path(String class_path) {
         this.class_path = class_path;
         return this;
     }
@@ -71,17 +71,17 @@ public class FlowDef extends Base {
         return flow_status;
     }
 
-    public FlowDef setFlow_status(String flow_status) {
+    public FlowStep setFlow_status(String flow_status) {
         this.flow_status = flow_status;
         return this;
     }
 
-    public String getStatus_name() {
-        return status_name;
+    public String getStep_name() {
+        return step_name;
     }
 
-    public FlowDef setStatus_name(String status_name) {
-        this.status_name = status_name;
+    public FlowStep setStep_name(String step_name) {
+        this.step_name = step_name;
         return this;
     }
 
@@ -89,7 +89,7 @@ public class FlowDef extends Base {
         return limittime;
     }
 
-    public FlowDef setLimittime(Integer limittime) {
+    public FlowStep setLimittime(Integer limittime) {
         this.limittime = limittime;
         return this;
     }

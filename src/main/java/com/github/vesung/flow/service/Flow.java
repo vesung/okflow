@@ -2,7 +2,7 @@ package com.github.vesung.flow.service;
 
 import com.github.vesung.flow.FlowUser;
 import com.github.vesung.flow.persistence.model.FlowData;
-import com.github.vesung.flow.persistence.model.FlowDef;
+import com.github.vesung.flow.persistence.model.FlowStep;
 import com.github.vesung.flow.persistence.model.FlowLog;
 
 import java.util.List;
@@ -31,7 +31,7 @@ public interface Flow {
      * @param stepName
      * @return
      */
-    FlowDef findStepByName(String stepName);
+    FlowStep findStepByName(String stepName);
 
     /**
      * 设置流程附加数据

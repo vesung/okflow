@@ -7,7 +7,7 @@ import com.github.vesung.flow.bean.FlowStepDto;
 import com.github.vesung.flow.bean.Result;
 import com.github.vesung.flow.persistence.dao.FlowDefMapper;
 import com.github.vesung.flow.persistence.dao.FlowTypeDefMapper;
-import com.github.vesung.flow.persistence.model.FlowDef;
+import com.github.vesung.flow.persistence.model.FlowStep;
 import com.github.vesung.flow.persistence.model.FlowTypeDef;
 import com.github.vesung.flow.service.FlowUserService;
 import io.swagger.annotations.ApiOperation;
@@ -47,8 +47,8 @@ public class OkFlowController {
     @ApiOperation("查询流程步骤")
     @GetMapping(path = "/list/step")
     @ResponseBody
-    public List<FlowDef> listStep(@RequestParam String type){
-        return flowDefMapper.select(new FlowDef().setType(type));
+    public List<FlowStep> listStep(@RequestParam String type){
+        return flowDefMapper.select(new FlowStep().setType(type));
     }
 
     @ApiOperation("更新流程定义")
@@ -79,7 +79,7 @@ public class OkFlowController {
     @ResponseBody
     public Result<String> updateStep(@PathVariable Integer stepId,
                                      @RequestBody FlowStepDto dto){
-        FlowDef step = this.assertNotNull(stepId);
+        FlowStep step = this.assertNotNull(stepId);
         BeanUtils.copyProperties(dto, step);
         step.setUpdate_date(new Date()).setUpdate_user(userFindService.currentUser().getAccount());
         flowDefMapper.updateByPrimaryKey(step);
@@ -91,7 +91,7 @@ public class OkFlowController {
     @GetMapping(path = "/query/next/step/{stepId}")
     @ResponseBody
     public Map<String, String> queryNextStep(@PathVariable Integer stepId){
-        FlowDef step = this.assertNotNull(stepId);
+        FlowStep step = this.assertNotNull(stepId);
         return JSON.parseObject(step.getNext_step(), Map.class) ;
     }
 
@@ -100,7 +100,7 @@ public class OkFlowController {
     @ResponseBody
     public Result<String> updateNextStep(@PathVariable Integer stepId,
                                          @RequestBody Map<String, String> nextStep){
-        FlowDef step = this.assertNotNull(stepId);
+        FlowStep step = this.assertNotNull(stepId);
         step.setNext_step(JSON.toJSONString(nextStep));
         step.setUpdate_date(new Date());
         step.setUpdate_user(userFindService.currentUser().getAccount());
@@ -109,8 +109,8 @@ public class OkFlowController {
     }
 
 
-    private FlowDef assertNotNull(Integer stepId) {
-        FlowDef step = flowDefMapper.selectByPrimaryKey(stepId);
+    private FlowStep assertNotNull(Integer stepId) {
+        FlowStep step = flowDefMapper.selectByPrimaryKey(stepId);
         if(step == null){
             throw new FlowException("流程步骤不存在");
         }

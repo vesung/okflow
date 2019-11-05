@@ -11,7 +11,7 @@ import com.github.vesung.flow.persistence.dao.FlowDataMapper;
 import com.github.vesung.flow.persistence.dao.FlowDefMapper;
 import com.github.vesung.flow.persistence.dao.FlowLogMapper;
 import com.github.vesung.flow.persistence.model.FlowData;
-import com.github.vesung.flow.persistence.model.FlowDef;
+import com.github.vesung.flow.persistence.model.FlowStep;
 import com.github.vesung.flow.persistence.model.FlowLog;
 import com.github.vesung.flow.service.*;
 import com.google.common.base.Strings;
@@ -97,7 +97,7 @@ public class FlowImpl implements Flow {
             throw new FlowException("流程已结束");
         }
 
-        FlowDef nextStep = this.findNextStep(action);
+        FlowStep nextStep = this.findNextStep(action);
         if(nextStep == null) {
             log.error("下一步流程未定义:" + action);
             return null;
@@ -128,9 +128,9 @@ public class FlowImpl implements Flow {
      * @param action
      * @return
      */
-    public FlowDef findNextStep(String action) {
+    public FlowStep findNextStep(String action) {
         // 当前流程
-        FlowDef step = this.findCurrentStep();
+        FlowStep step = this.findCurrentStep();
 
         if(const_draft.equals(flowData.getStatus())){
             return step;
@@ -160,7 +160,7 @@ public class FlowImpl implements Flow {
             return null;
         }
 
-        return flowDefMapper.selectOne(new FlowDef()
+        return flowDefMapper.selectOne(new FlowStep()
                 .setType(flowData.getFlow_type())
                 .setStep(nextStep));
     }
@@ -169,8 +169,8 @@ public class FlowImpl implements Flow {
      * 查找当前流程
      * @return
      */
-    public FlowDef findCurrentStep() {
-        return flowDefMapper.selectOne(new FlowDef()
+    public FlowStep findCurrentStep() {
+        return flowDefMapper.selectOne(new FlowStep()
                 .setType(flowData.getFlow_type())
                 .setStep(const_draft.equals(flowData.getStatus()) ? "0" : flowData.getCurrent_step()));
     }
@@ -197,8 +197,8 @@ public class FlowImpl implements Flow {
             throw new FlowException("无权操作当前流程");
         }
 
-        FlowDef currStep = this.findCurrentStep();
-        FlowDef nextStep = this.findNextStep(action);
+        FlowStep currStep = this.findCurrentStep();
+        FlowStep nextStep = this.findNextStep(action);
 
         if(nextStep == null){
             throw new FlowException("下一个步骤未定义:" + action);
@@ -213,7 +213,7 @@ public class FlowImpl implements Flow {
 
         // 当前流程即将结束，如果处于流程转报过程，则恢复转报前流程
         if(const_endFlow.equals(nextStep.getStep()) && this.isTransfering()){
-            FlowDef transferStep = this.unTransferDept();
+            FlowStep transferStep = this.unTransferDept();
             FlowUser transferUser = this.userService.findUsers(
                     this.flowData.getFlow_dept(), transferStep.getStep_role()).get(0);
             this.goNextStep(flowData, currStep, transferStep, currUser, transferUser,
@@ -322,7 +322,7 @@ public class FlowImpl implements Flow {
      * 恢复切换的流程机构
      * @return
      */
-    private FlowDef unTransferDept() {
+    private FlowStep unTransferDept() {
         List depts = (List) this.getVar(const_transfer);
         Map<String, String> dept = (Map<String, String>) depts.get(0);
 
@@ -335,7 +335,7 @@ public class FlowImpl implements Flow {
         this.setVar(const_transfer, depts);
 
         // 返回切换前步骤
-        return this.flowDefMapper.selectOne(new FlowDef()
+        return this.flowDefMapper.selectOne(new FlowStep()
             .setStep(dept.get("currStep"))
             .setType(this.flowData.getFlow_type()));
     }
@@ -345,8 +345,8 @@ public class FlowImpl implements Flow {
      * @param stepName
      * @return
      */
-    public FlowDef findStepByName(String stepName) {
-        return this.flowDefMapper.selectOne(new FlowDef()
+    public FlowStep findStepByName(String stepName) {
+        return this.flowDefMapper.selectOne(new FlowStep()
             .setType(this.flowData.getFlow_type())
             .setStep(stepName));
     }
@@ -448,7 +448,7 @@ public class FlowImpl implements Flow {
      * @param action
      * @param comment
      */
-    private void goNextStep(FlowData flowData, FlowDef currStep, FlowDef nextStep,
+    private void goNextStep(FlowData flowData, FlowStep currStep, FlowStep nextStep,
                             FlowUser currUser, FlowUser nextUser,
                             String action, String comment) {
         // 更新流程log
@@ -489,7 +489,7 @@ public class FlowImpl implements Flow {
      * @param bizId
      * @return
      */
-    private FlowLog buildFlowLog(FlowDef step, String bizId, FlowUser currUser, String comments, String flowAction) {
+    private FlowLog buildFlowLog(FlowStep step, String bizId, FlowUser currUser, String comments, String flowAction) {
         FlowLog log = new FlowLog();
         log.setStep(step == null ? "-1" : step.getStep());
         log.setBiz_id(bizId);
