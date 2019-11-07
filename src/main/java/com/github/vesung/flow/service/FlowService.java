@@ -1,6 +1,7 @@
 package com.github.vesung.flow.service;
 
 import com.github.vesung.flow.FlowUser;
+import com.github.vesung.flow.bean.FlowNextStep;
 import com.github.vesung.flow.persistence.model.FlowStep;
 import com.github.vesung.flow.persistence.model.FlowLog;
 import com.github.vesung.flow.persistence.model.FlowTypeDef;
@@ -78,4 +79,11 @@ public interface FlowService {
      * @param flowId
      */
     void deleteStep(Integer flowId);
+
+    /**
+     * 获取下一步配置信息
+     * @param stepId
+     * @return
+     */
+    List<FlowNextStep> queryNextStepDef(Integer stepId);
 }

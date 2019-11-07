@@ -1,7 +1,9 @@
 package com.github.vesung.flow.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.github.vesung.flow.FlowException;
 import com.github.vesung.flow.FlowUser;
+import com.github.vesung.flow.bean.FlowNextStep;
 import com.github.vesung.flow.persistence.dao.FlowDataMapper;
 import com.github.vesung.flow.persistence.dao.FlowDefMapper;
 import com.github.vesung.flow.persistence.dao.FlowLogMapper;
@@ -12,6 +14,7 @@ import com.github.vesung.flow.persistence.model.FlowLog;
 import com.github.vesung.flow.persistence.model.FlowTypeDef;
 import com.github.vesung.flow.service.*;
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Lookup;
@@ -137,6 +140,7 @@ public class FlowServiceImpl implements FlowService {
         def.setStep(flow.getStep());
         def.setStep_name(flow.getStep_name());
         def.setStep_role(flow.getStep_role());
+        def.setClass_path(flow.getClass_path());
         def.setUpdate_user(userService.currentUser().getAccount());
         def.setUpdate_date(new Date());
 
@@ -171,9 +175,27 @@ public class FlowServiceImpl implements FlowService {
 
     }
 
+    @Override
+    public List<FlowNextStep> queryNextStepDef(Integer stepId) {
+        FlowStep step = this.assertNotNull(stepId);
+        String nextStr = step.getNext_step();
+        List<FlowNextStep> ret = new ArrayList<>();
 
-    private FlowStep assertNotNull(Integer id) {
-        FlowStep flow = flowDefMapper.selectByPrimaryKey(id);
+        if(nextStr.startsWith("{")){
+            Map<String, String> map = JSON.parseObject(nextStr, Map.class);
+            map.forEach((key, value) ->{
+                ret.add(new FlowNextStep().setAction(key).setNext(value));
+            });
+        }else{
+            ret.add(new FlowNextStep().setAction("default").setNext(nextStr));
+        }
+
+        return ret;
+    }
+
+
+    private FlowStep assertNotNull(Integer stepId) {
+        FlowStep flow = flowDefMapper.selectByPrimaryKey(stepId);
         if(flow == null){
             throw new FlowException("步骤未定义");
         }

@@ -463,7 +463,7 @@ public class FlowImpl implements Flow {
         flowData.setUpdate_user(currUser.getAccount());
         flowData.setUpdate_date(new Date());
         flowData.setCurrent_user(nextUser.getAccount());
-        flowData.setCurrent_role(nextUser.getRoleCode());
+        flowData.setCurrent_role(nextStep.getStep_role());
         flowData.setCurrent_dept(nextUser.getDeptCode());
         flowData.setCurrent_step(nextStep.getStep());
         flowData.setFlow_action(action);
