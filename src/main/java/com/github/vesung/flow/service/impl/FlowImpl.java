@@ -154,6 +154,10 @@ public class FlowImpl implements Flow {
         if(nextStep.startsWith("{")){
             JSONObject forward = JSON.parseObject(nextStep);
             nextStep = forward.getString(action);
+            // 尝试获取默认步骤
+            if(nextStep == null){
+                nextStep = forward.getString("default");
+            }
         }
 
         if(nextStep == null){
