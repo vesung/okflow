@@ -7,6 +7,7 @@ import com.github.vesung.flow.persistence.model.FlowLog;
 import com.github.vesung.flow.persistence.model.FlowTypeDef;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 流程管理Service
@@ -86,4 +87,11 @@ public interface FlowService {
      * @return
      */
     List<FlowNextStep> queryNextStepDef(Integer stepId);
+
+    /**
+     * 更新下一步
+     * @param stepId
+     * @param nexts
+     */
+    void updateNextStep(Integer stepId, Map<String, String> nexts);
 }

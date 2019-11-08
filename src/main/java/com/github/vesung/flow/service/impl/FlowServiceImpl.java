@@ -193,6 +193,16 @@ public class FlowServiceImpl implements FlowService {
         return ret;
     }
 
+    @Override
+    public void updateNextStep(Integer stepId, Map<String, String> nexts) {
+        FlowStep step = this.assertNotNull(stepId);
+        step.setNext_step(JSON.toJSONString(nexts));
+        step.setUpdate_date(new Date());
+        step.setUpdate_user(userService.currentUser().getAccount());
+
+        flowDefMapper.updateByPrimaryKey(step);
+    }
+
 
     private FlowStep assertNotNull(Integer stepId) {
         FlowStep flow = flowDefMapper.selectByPrimaryKey(stepId);
