@@ -60,6 +60,8 @@ public class FlowImpl implements Flow {
     @Resource
     private ApplicationContext applicationContext;
 
+    private FlowTimeHelper flowTimeHelper = null;
+
     public FlowImpl(FlowData flowData){
         this.flowData = flowData;
 
@@ -437,6 +439,11 @@ public class FlowImpl implements Flow {
         flowDataMapper.updateByPrimaryKey(this.flowData);
     }
 
+    @Override
+    public void setFlowTimeHelper(FlowTimeHelper helper) {
+        this.flowTimeHelper = helper;
+    }
+
     public String getCurrent_step() {
         return this.flowData.getCurrent_step();
     }
@@ -471,6 +478,10 @@ public class FlowImpl implements Flow {
         flowData.setCurrent_dept(nextUser.getDeptCode());
         flowData.setCurrent_step(nextStep.getStep());
         flowData.setFlow_action(action);
+        if(flowTimeHelper != null){
+            flowData.setLimit_time(flowTimeHelper.flowTime(nextStep.getStep(), flowData.getBuz_id(), nextStep.getLimittime()));
+            flowData.setBegin_time(new Date());
+        }
         flowDataMapper.updateByPrimaryKey(flowData);
 
         // 执行流程自定义action

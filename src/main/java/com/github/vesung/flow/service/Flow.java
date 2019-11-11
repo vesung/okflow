@@ -125,4 +125,10 @@ public interface Flow {
      * 重置当前流程计时为当前时间
      */
     void resetTime();
+
+    /**
+     * 设置流程时限计算助手
+     * @param helper
+     */
+    void setFlowTimeHelper(FlowTimeHelper helper);
 }
