@@ -11,7 +11,7 @@ public interface FlowTimeHelper {
      * @param step 步骤编码
      * @param buz_id 业务id
      * @param defaultTime
-     * @return
+     * @return 时限小于0时，不启动时限。
      */
     Integer flowTime(String step, String buz_id, Integer defaultTime);
 }

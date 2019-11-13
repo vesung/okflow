@@ -131,4 +131,10 @@ public interface Flow {
      * @param helper
      */
     void setFlowTimeHelper(FlowTimeHelper helper);
+
+    /**
+     * 延期流程时限
+     * @param time
+     */
+    void delayFlowTime(Integer time);
 }

@@ -428,7 +428,8 @@ public class FlowImpl implements Flow {
             return;
         }
 
-        this.resetTime();
+        this.flowData.setBegin_time(new Date());
+        flowDataMapper.updateByPrimaryKey(this.flowData);
         log.info("流程计时启动成功");
     }
 
@@ -442,6 +443,22 @@ public class FlowImpl implements Flow {
     @Override
     public void setFlowTimeHelper(FlowTimeHelper helper) {
         this.flowTimeHelper = helper;
+    }
+
+    @Override
+    public void delayFlowTime(Integer time) {
+        if(this.flowData.getLimit_time() == null){
+            return;
+        }
+
+        // 更新流程数据时限
+        this.flowData.setLimit_time(this.flowData.getLimit_time() + time);
+        flowDataMapper.updateByPrimaryKey(this.flowData);
+
+        // 更新日志时限
+        List<FlowLog> logs = this.queryFlowLogs();
+        FlowLog log = logs.get(logs.size()-1);
+        this.flowLogMapper.updateByPrimaryKey(log.setLimittime(this.flowData.getLimit_time()));
     }
 
     public String getCurrent_step() {
@@ -479,8 +496,11 @@ public class FlowImpl implements Flow {
         flowData.setCurrent_step(nextStep.getStep());
         flowData.setFlow_action(action);
         if(flowTimeHelper != null){
-            flowData.setLimit_time(flowTimeHelper.flowTime(nextStep.getStep(), flowData.getBuz_id(), nextStep.getLimittime()));
-            flowData.setBegin_time(new Date());
+            Integer time = flowTimeHelper.flowTime(nextStep.getStep(), flowData.getBuz_id(), nextStep.getLimittime());
+            if(time > 0){
+                flowData.setLimit_time(time);
+                flowData.setBegin_time(new Date());
+            }
         }
         flowDataMapper.updateByPrimaryKey(flowData);
 
