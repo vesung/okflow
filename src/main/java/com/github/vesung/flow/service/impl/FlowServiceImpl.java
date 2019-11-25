@@ -179,6 +179,10 @@ public class FlowServiceImpl implements FlowService {
     public List<FlowNextStep> queryNextStepDef(Integer stepId) {
         FlowStep step = this.assertNotNull(stepId);
         String nextStr = step.getNext_step();
+        if(nextStr == null){
+            return null;
+        }
+
         List<FlowNextStep> ret = new ArrayList<>();
 
         if(nextStr.startsWith("{")){
