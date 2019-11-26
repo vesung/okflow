@@ -62,7 +62,8 @@ public class FlowServiceImpl implements FlowService {
 
         int buzCount = flowDataMapper.selectCount(new FlowData().setFlow_type(flowType).setBuz_id(buzId));
         if(buzCount >= 1){
-            throw new FlowException("流程已存在，不要重复启动");
+            log.info("流程已存在..........................");
+            return this.getCurrentFlow(flowType, buzId);
         }
 
         // 更新流程主单信息
