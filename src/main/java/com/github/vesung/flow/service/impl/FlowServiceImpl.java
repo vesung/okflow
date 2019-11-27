@@ -150,13 +150,16 @@ public class FlowServiceImpl implements FlowService {
 
     @Override
     public void addStep(FlowStep flow) {
-        FlowStep def = flowDefMapper.selectByPrimaryKey(flow.getId());
-        if(def != null){
-            throw new FlowException("流程步骤已存在");
-        }
-
         if(Strings.isNullOrEmpty(flow.getType())){
             throw new FlowException("请选择流程种类");
+        }
+
+        List<FlowStep> def = flowDefMapper.select(new FlowStep()
+                .setStep(flow.getStep())
+                .setType(flow.getType())
+        );
+        if(def != null && def.size() > 0){
+            throw new FlowException("流程步骤已存在");
         }
 
         flow.setId(null);
