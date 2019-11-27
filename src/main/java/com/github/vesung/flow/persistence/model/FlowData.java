@@ -1,9 +1,6 @@
 package com.github.vesung.flow.persistence.model;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 @Table(name = "flow_data")
@@ -48,6 +45,8 @@ public class FlowData {
     private String vars;
     // 流程当前action
     private String flow_action;
+    @Transient
+    private String last_action;
 
     public Integer getId() {
         return id;
@@ -209,5 +208,13 @@ public class FlowData {
 
     public String getFlow_action() {
         return flow_action;
+    }
+
+    public void setLast_action(String last_action) {
+        this.last_action = last_action;
+    }
+
+    public String getLast_action() {
+        return last_action;
     }
 }

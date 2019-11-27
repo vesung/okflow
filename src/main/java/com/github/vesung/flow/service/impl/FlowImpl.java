@@ -217,6 +217,11 @@ public class FlowImpl implements Flow {
             this.setStepVar(currStep.getStep(), const_data, data);
         }
 
+        String lastAction = (String) this.getVar("_lastAction");
+        if(lastAction != null){
+            flowData.setLast_action(lastAction);
+        }
+        this.setVar("_lastAction", action);
         // 当前流程即将结束，如果处于流程转报过程，则恢复转报前流程
         if(const_endFlow.equals(nextStep.getStep()) && this.isTransfering()){
             FlowStep transferStep = this.unTransferDept();
