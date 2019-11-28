@@ -125,11 +125,13 @@ public class FlowServiceImpl implements FlowService {
     @Override
     public List<FlowLog> queryFlowLogsByFilter(String flowType, List<String> buzIds, List<String> actions){
         Example example = new Example(FlowLog.class);
-        example.createCriteria()
+        Example.Criteria criteria = example.createCriteria()
                 .andIsNotNull("comments")
                 .andEqualTo("flow_type", flowType)
-                .andIn("biz_id", buzIds)
-                .andIn("flow_action", actions);
+                .andIn("biz_id", buzIds);
+        if(actions != null){
+            criteria.andIn("flow_action", actions);
+        }
         example.setOrderByClause("update_date desc");
 
         return flowLogMapper.selectByExample(example);

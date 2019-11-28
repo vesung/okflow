@@ -51,7 +51,7 @@ public interface FlowService {
     /**
      * 获取指定条件的日志列表
      * @param buzIds
-     * @param actions
+     * @param actions,为null标识查全部
      * @return
      */
     List<FlowLog> queryFlowLogsByFilter(String flowType, List<String> buzIds, List<String> actions);
